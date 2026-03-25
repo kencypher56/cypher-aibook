@@ -1,124 +1,237 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cypher-aibook - AI Text-to-Speech Reader</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font Awesome 6 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/kTc6zsCp4nTw7+fWQ9Yq9fQOG4+e4jlP02RfY5Q0h4L/6eHw1Yhk9i0knE1mA9y5wr8a8zYyjl1/A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <style>
-    body { background: #f8fafc; color: #1f2937; margin: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, sans-serif; }
-    .container { max-width: 980px; margin: 0 auto; padding: 2rem 1rem; }
-    .card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 1rem; padding: 1.25rem; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08); }
-    .badge { display: inline-flex; align-items: center; gap: 0.4rem; background:#4f46e5; color:#fff; padding:0.3rem 0.7rem; border-radius:9999px; font-size:0.75rem; font-weight:700; }
-    .badge i { font-size:0.75rem; }
-    .section-title { font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.75rem; }
-    .list-icon { margin-right:0.75rem; color:#4f46e5; }
-    pre { background:#0f172a; color:#e2e8f0; border-radius:0.75rem; padding:1rem; overflow:auto; font-size:0.9rem; }
-    code { background:#e0f2fe; padding:0.15rem 0.4rem; border-radius:0.3rem; }
-    table { width:100%; border-collapse: collapse; margin-top:0.75rem; }
-    th, td { border:1px solid #d1d5db; padding:0.6rem 0.75rem; text-align:left; }
-    th { background:#e5e7eb; }
-    .footer { margin-top:2rem; padding-top:1rem; border-top:1px solid #d1d5db; color:#6b7280; text-align:center; }
-  </style>
-</head>
-<body>
-  <div class="container text-center">
-    <div class="card">
-      <div style="display:inline-flex;align-items:center;gap:.8rem;">
-        <i class="fas fa-book-open" style="font-size:2rem;color:#4338ca;"></i>
-        <h1 style="margin:0;font-size:2.4rem;">cypher-aibook</h1>
-      </div>
-      <p style="margin:.75rem 0 1rem;font-size:1.1rem;color:#4b5563;">Open-source AI Text-to-Speech reader for text and documents (PDF, DOCX, EPUB).</p>
-      <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:0.5rem;">
-        <span class="badge"><i class="fab fa-python"></i>Python 3.10+</span>
-        <span class="badge" style="background:#059669;"><i class="fab fa-node-js"></i>Node.js</span>
-        <span class="badge" style="background:#8b5cf6;"><i class="fas fa-microphone-alt"></i>TTS</span>
-        <span class="badge" style="background:#f59e0b;"><i class="fas fa-robot"></i>FastAPI</span>
-      </div>
-    </div>
+# 📚 cypher-aibook
 
-    <section class="card" style="margin-top:1rem;text-align:left;">
-      <h2 class="section-title"><i class="fas fa-cogs list-icon"></i>Features</h2>
-      <ul style="padding-left:1.25rem;">
-        <li><strong>Multi-model voice synthesis:</strong> Tacotron2, GlowTTS, VITS (109 speakers), SpeedySpeech.</li>
-        <li><strong>Document upload:</strong> PDF, DOCX, EPUB text extractor with one-click playback.</li>
-        <li><strong>Streaming playback:</strong> Web Audio API support for low-latency audio output.</li>
-        <li><strong>GPU/CPU support:</strong> Torch backend works on CUDA and CPU fallback.</li>
-      </ul>
-    </section>
+> An open-source AI Text-to-Speech reader that converts text and documents (PDF, DOCX, EPUB) into natural-sounding audio using state-of-the-art TTS models.
 
-    <section class="card" style="margin-top:1rem;text-align:left;">
-      <h2 class="section-title"><i class="fas fa-plug list-icon"></i>Quick Start</h2>
-      <div style="display:grid;gap:1rem;">
-        <div>
-          <p style="margin:0.5rem 0;"><i class="fas fa-terminal list-icon"></i><strong>Install Python deps</strong></p>
-          <pre><code>python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt</code></pre>
-        </div>
-        <div>
-          <p style="margin:0.5rem 0;"><i class="fas fa-terminal list-icon"></i><strong>Install Node deps</strong></p>
-          <pre><code>npm install</code></pre>
-        </div>
-        <div>
-          <p style="margin:0.5rem 0;"><i class="fas fa-play list-icon"></i><strong>Run both servers</strong></p>
-          <pre><code>python run.py
-npm start</code></pre>
-        </div>
-      </div>
-      <p style="margin-top:0.8rem;">Open <a href="http://localhost:3100">http://localhost:3100</a> after startup.</p>
-    </section>
+<div align="center">
 
-    <section class="card" style="margin-top:1rem;text-align:left;">
-      <h2 class="section-title"><i class="fas fa-project-diagram list-icon"></i>Project Layout</h2>
-      <pre><code>cypher-aibook/
-  api.py
-  audio.js
-  files.js
-  files_processing.py
-  process.js
-  process_model.py
-  script.js
-  server.js
-  run.py
-  systemdetection.py
-  ui.js
-  styles.css
-  index.html
-  package.json
-  requirements.txt
-  model/
-  uploads/
-  voices/
-  README.md</code></pre>
-    </section>
+![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-14+-green?logo=node.js&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-FastAPI-009688?logo=fastapi&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
-    <section class="card" style="margin-top:1rem;text-align:left;">
-      <h2 class="section-title"><i class="fas fa-plug list-icon"></i>API Endpoints</h2>
-      <ul style="padding-left:1.25rem;">
-        <li><code>GET /models</code>: list TTS models</li>
-        <li><code>GET /voices?model_id=&lt;id&gt;</code>: list voices</li>
-        <li><code>GET /synthesize?text=&lt;text&gt;&model_id=&lt;id&gt;&voice=&lt;voice&gt;</code>: generate WAV</li>
-        <li><code>POST /upload</code>: upload and parse documents</li>
-        <li><code>GET /system</code>: CPU/GPU status</li>
-        <li><code>GET /health</code>: health check</li>
-      </ul>
-    </section>
+[Features](#-features) • [Quick Start](#-quick-start) • [API](#-api-endpoints) • [Troubleshooting](#-troubleshooting)
 
-    <section class="card" style="margin-top:1rem;text-align:left;">
-      <h2 class="section-title"><i class="fas fa-bug list-icon"></i>Troubleshooting</h2>
-      <p style="margin:0.5rem 0;"><strong>Model download Fails:</strong> check internet and `./model/tts` contents.</p>
-      <p style="margin:0.5rem 0;"><strong>Port conflict:</strong> `lsof -i :9001` / `kill -9 $(lsof -t -i:9001)`.</p>
-      <p style="margin:0.5rem 0;"><strong>No audio:</strong> verify backend at <code>http://localhost:9001/health</code>.</p>
-    </section>
+</div>
 
-    <div class="footer">
-      <p><i class="far fa-copyright"></i> 2026 cypher-aibook - Open Source</p>
-      <p>Built with <i class="fas fa-heart" style="color:#ef4444;"></i> for accessible AI TTS</p>
-    </div>
-  </div>
-</body>
-</html>
+---
+
+## ✨ Features
+
+- 🎙️ **Multi-model voice synthesis** - Tacotron2, GlowTTS, VITS (109 speakers), SpeedySpeech
+- 📄 **Document support** - Upload PDF, DOCX, EPUB files with automatic text extraction
+- 🔊 **Real-time streaming** - Web Audio API for low-latency playback
+- 🚀 **GPU/CPU support** - PyTorch backend works on CUDA and CPU fallback
+- 👥 **Speaker selection** - Choose from 109 VITS speakers or default voice
+
+---
+
+## 🔧 Tech Stack
+
+### Backend
+- **Python 3.10+** - Core language
+- **FastAPI** - REST API framework
+- **PyTorch** - Deep learning (CPU/CUDA)
+- **TTS Library** - HiFiGAN vocoder & models
+- **PyPDF2, python-docx, ebooklib** - Document parsing
+
+### Frontend
+- **Node.js + Express** - Static server
+- **Vanilla JavaScript (ES6)** - UI logic
+- **Web Audio API** - Audio streaming
+- **HTML5/CSS3** - Interface
+
+---
+
+## 🚀 Quick Start
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/yourusername/cypher-aibook.git
+cd cypher-aibook
+```
+
+### 2. Set up Python environment
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+### 3. Install Node dependencies
+```bash
+npm install
+```
+
+### 4. Start the servers
+
+**Terminal 1 - Backend (FastAPI)**
+```bash
+conda activate cypher-aibook
+python run.py
+```
+Backend runs on `http://localhost:9001`
+
+**Terminal 2 - Frontend (Express)**
+```bash
+npm start
+```
+Frontend runs on `http://localhost:3100`
+
+Open your browser to **[http://localhost:3100](http://localhost:3100)**
+
+---
+
+## 📁 Project Structure
+
+```
+cypher-aibook/
+├── api.py                    # FastAPI endpoints
+├── audio.js                  # Frontend audio handling
+├── files.js                  # File upload logic
+├── files_processing.py       # Document text extraction
+├── process.js                # Synthesis requests
+├── process_model.py          # TTS synthesis engine
+├── run.py                    # Backend entry point
+├── server.js                 # Express frontend server
+├── systemdetection.py        # GPU/CPU detection
+├── ui.js                     # UI interactions
+├── script.js                 # Main frontend logic
+├── styles.css                # Custom styling
+├── index.html                # Web interface
+├── package.json              # Node dependencies
+├── requirements.txt          # Python dependencies
+├── model/                    # TTS models (auto-downloaded)
+├── voices/                   # Voice metadata
+├── uploads/                  # Uploaded documents
+└── README.md
+```
+
+---
+
+## 🔌 API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/models` | GET | List available TTS models |
+| `/voices?model_id=<id>` | GET | Get voices for a model |
+| `/synthesize?text=<text>&model_id=<id>&voice=<voice>` | GET | Generate WAV audio |
+| `/upload` | POST | Upload document and extract text |
+| `/system` | GET | System information (CPU/GPU) |
+| `/health` | GET | Health check |
+
+**Note:** All endpoints are proxied by the frontend server for CORS safety.
+
+---
+
+## 📊 Model Details
+
+| Model | Voices | Language | Speed | Quality |
+|-------|--------|----------|-------|---------|
+| **Tacotron2** | 1 | English | Medium | High |
+| **GlowTTS** | 1 | English | Fast | High |
+| **VITS (VCTK)** | 109 | Multi-speaker | Fast | Very High |
+| **SpeedySpeech** | 1 | English | Very Fast | Good |
+
+---
+
+## 🎯 How to Use
+
+### 1. **Text Input** 
+   - Type or paste text into the input field
+   - Select a TTS model
+   - Choose a voice (if available)
+   - Click **Synthesize** to generate audio
+
+### 2. **Document Upload**
+   - Upload PDF, DOCX, or EPUB files
+   - Text is automatically extracted
+   - Ready for immediate synthesis
+
+### 3. **Voice Selection**
+   - VITS offers 109 different speakers
+   - Other models use a single default voice
+   - Change voices without re-synthesizing
+
+---
+
+## 🐛 Troubleshooting
+
+### Models not found / Download fails
+- Check `./model/tts/` directory
+- Ensure internet connectivity
+- Run manual download:
+```bash
+python -c "from TTS.api import TTS; TTS('tts_models/en/ljspeech/tacotron2-DDC')"
+```
+
+### Audio doesn't play
+- Open browser console (F12) for errors
+- Check backend health:
+```bash
+curl http://localhost:9001/health
+```
+- Test synthesis:
+```bash
+curl "http://localhost:9001/synthesize?text=hello&model_id=tts_models/en/ljspeech/tacotron2-DDC"
+```
+
+### Backend fails to start
+- Ensure conda environment is activated
+- Verify all dependencies are installed
+- Check if port 9001 is free:
+```bash
+lsof -i :9001
+```
+
+### Ports already in use
+- Kill conflicting process:
+```bash
+kill -9 $(lsof -t -i:9001)  # Port 9001
+kill -9 $(lsof -t -i:3100)  # Port 3100
+```
+
+---
+
+## 📦 Requirements
+
+- **Python 3.10+**
+- **Node.js 14+**
+- **pip** and **npm**
+- **4GB+ RAM** (8GB+ recommended for TTS models)
+- **GPU optional** (CUDA 11.0+ for faster synthesis)
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- [TTS Library](https://github.com/coqui-ai/TTS) - Text-to-Speech models
+- [FastAPI](https://fastapi.tiangolo.com/) - Modern API framework
+- [Mozilla Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
+
+---
+
+<div align="center">
+
+Built with ❤️ for accessible AI text-to-speech
+
+[⬆ Back to top](#-cypher-aibook)
+
+</div>
