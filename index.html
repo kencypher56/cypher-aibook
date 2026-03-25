@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cypher-aibook</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header>
+      <div class="logo-container">
+        <div class="logo">
+          <svg class="logo-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5h16M6 12.329v5.43a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-5.43m0-2.7V6.5a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v5.129"/>
+            <circle cx="12" cy="8" r="1"/>
+          </svg>
+          <span>cypher<strong>book</strong></span>
+        </div>
+      </div>
+      <div class="header-info">
+        <span id="systemBadge" class="badge badge-cpu">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="2" width="20" height="20" rx="2.18"></rect>
+            <line x1="12" y1="9" x2="12" y2="15"></line><line x1="9" y1="12" x2="15" y2="12"></line>
+          </svg>
+          CPU Mode
+        </span>
+      </div>
+    </header>
+
+    <!-- Status Bar -->
+    <div id="status" class="status-bar status-info">
+      <svg class="status-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polyline points="12 6 12 12 16 14"></polyline>
+      </svg>
+      <span class="status-text">Connecting to backend...</span>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      
+      <!-- Upload Section -->
+      <section id="uploadSection" class="card">
+        <div class="card-header">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline>
+          </svg>
+          <h2 class="section-title">Upload or Paste Text</h2>
+        </div>
+        
+        <div class="upload-container">
+          <div id="dropzone" class="dropzone">
+            <svg class="dropzone-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <p class="dropzone-text">Drop PDF, DOCX, or EPUB here</p>
+            <span class="dropzone-hint">or click to browse</span>
+          </div>
+          <input type="file" id="fileInput" accept=".pdf,.docx,.epub" style="display:none" />
+          
+          <div class="divider">OR</div>
+          
+          <div class="textarea-container">
+            <textarea id="textInput" class="text-input" placeholder="Paste your text here..."></textarea>
+            <button id="btnUseText" class="btn btn-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              Use This Text
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Controls Section -->
+      <section class="card">
+        <div class="controls-grid">
+          <div class="control-group">
+            <label for="modelSelect" class="label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+              TTS Model
+            </label>
+            <select id="modelSelect" class="select">
+              <option>Loading models...</option>
+            </select>
+          </div>
+          
+          <div class="control-group">
+            <label for="voiceSelect" class="label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M23 7l-7 5 7 5V7z"></path>
+                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+              </svg>
+              Voice
+            </label>
+            <select id="voiceSelect" class="select">
+              <option value="default">default</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Playback Controls -->
+      <section id="controls" class="hidden card controls-card">
+        <div class="playback-controls">
+          <button id="btnBackward" class="btn btn-icon" title="Previous">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 6h2v12H6V6zm3.5 6l8.5 6V6l-8.5 6z"></path>
+            </svg>
+          </button>
+          
+          <button id="btnPlay" class="btn btn-play" title="Play">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span>Play</span>
+          </button>
+          
+          <button id="btnPause" class="btn btn-pause hidden" title="Pause">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="6" y="4" width="4" height="16"></rect>
+              <rect x="14" y="4" width="4" height="16"></rect>
+            </svg>
+            <span>Pause</span>
+          </button>
+          
+          <button id="btnForward" class="btn btn-icon" title="Next">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16 6h2v12h-2V6zm-11 6l8.5-6v12l-8.5-6z"></path>
+            </svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- Reader Section -->
+      <section id="readerSection" class="hidden card">
+        <div class="card-header">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 7h16M4 12h16M4 17h16"></path>
+          </svg>
+          <h2 class="section-title">Now Reading</h2>
+        </div>
+        <div id="textDisplay" class="text-display"></div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p class="footer-text">cypher-aibook • AI Powered Text-to-Speech Reader</p>
+    </footer>
+  </div>
+
+  <!-- Application Scripts -->
+  <script src="process.js"></script>
+  <script src="audio.js"></script>
+  <script src="ui.js"></script>
+  <script src="files.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
