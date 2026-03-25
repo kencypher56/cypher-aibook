@@ -9,7 +9,7 @@
 ![FastAPI](https://img.shields.io/badge/FastAPI-FastAPI-009688?logo=fastapi&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
-[Features](#-features) • [Quick Start](#-quick-start) • [API](#-api-endpoints) • [Troubleshooting](#-troubleshooting)
+[Features](#-features) • [Setup](#-complete-setup-guide) • [API](#-api-endpoints) • [Troubleshooting](#-troubleshooting)
 
 </div>
 
@@ -42,42 +42,234 @@
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Complete Setup Guide
 
-### 1. Clone the repository
+### Prerequisites
+
+Before starting, ensure you have:
+- **Python 3.10+** installed
+- **Node.js 14+** and **npm** installed
+- **Conda** (recommended) or **pip** for package management
+- **4GB+ RAM** (8GB+ recommended for TTS models)
+- **GPU optional** (CUDA 11.0+ for accelerated synthesis)
+
+Check your setup:
+```bash
+python --version      # Should be 3.10 or higher
+node --version        # Should be 14 or higher
+npm --version         # Node package manager
+conda --version       # Check if Conda is installed
+```
+
+---
+
+### Step 1️⃣ Clone the Repository
 ```bash
 git clone https://github.com/yourusername/cypher-aibook.git
 cd cypher-aibook
 ```
 
-### 2. Set up Python environment
+---
+
+### Step 2️⃣ Set Up Python Environment with Conda (Recommended)
+
+Using Conda is recommended as it handles CUDA dependencies better:
+
 ```bash
+# Create a new conda environment with Python 3.10
+conda create -n cypher-aibook python=3.10 -y
+
+# Activate the environment
+conda activate cypher-aibook
+
+# Verify activation (you should see (cypher-aibook) in your prompt)
+python --version
+```
+
+**Alternative: Using venv (without Conda)**
+```bash
+# Create virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Activate virtual environment
+# On Linux/Mac:
+source venv/bin/activate
+# On Windows:
+venv\Scripts\activate
+
+# Verify activation
+python --version
+```
+
+---
+
+### Step 3️⃣ Install Python Dependencies
+
+Install all required Python packages:
+
+```bash
+# Upgrade pip first
+pip install --upgrade pip setuptools wheel
+
+# Install dependencies from requirements.txt
 pip install -r requirements.txt
 ```
 
-### 3. Install Node dependencies
+**For GPU acceleration (CUDA 11.8+):**
 ```bash
-npm install
+# Install PyTorch with CUDA support
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+
+# Install remaining dependencies
+pip install -r requirements.txt
 ```
 
-### 4. Start the servers
-
-**Terminal 1 - Backend (FastAPI)**
+**Verify installation:**
 ```bash
-conda activate cypher-aibook
+python -c "import torch; print(f'PyTorch: {torch.__version__}')"
+python -c "from TTS.api import TTS; print('TTS library: OK')"
+python -c "import fastapi; print('FastAPI: OK')"
+```
+
+---
+
+### Step 4️⃣ Download & Setup TTS Models
+
+Models are typically downloaded automatically on first use, but you can pre-download them:
+
+**Option A: Automatic (on first synthesis)**
+```bash
+# Just run the app and use it - models download automatically
 python run.py
 ```
-Backend runs on `http://localhost:9001`
 
-**Terminal 2 - Frontend (Express)**
+**Option B: Pre-download all models (recommended)**
+
+Run the setup script to download models before first use:
 ```bash
+python setup.py
+```
+
+Or manually download individual models:
+```bash
+# Download Tacotron2 model
+python -c "from TTS.api import TTS; TTS('tts_models/en/ljspeech/tacotron2-DDC')"
+
+# Download GlowTTS model
+python -c "from TTS.api import TTS; TTS('tts_models/en/ljspeech/glow-tts')"
+
+# Download VITS model (109 speakers)
+python -c "from TTS.api import TTS; TTS('tts_models/en/vctk/vits')"
+
+# Download SpeedySpeech model
+python -c "from TTS.api import TTS; TTS('tts_models/en/ljspeech/speedy-speech')"
+
+# Download vocoder (HiFiGAN)
+python -c "from TTS.api import TTS; TTS('vocoder_models/en/ljspeech/hifigan_v2')"
+```
+
+**Note:** Initial model downloads are large (1-3GB total). Ensure stable internet connection.
+
+Verify model installation:
+```bash
+ls -la ./model/tts/
+```
+
+---
+
+### Step 5️⃣ Install Node.js Dependencies
+
+```bash
+# Install all Node.js dependencies
+npm install
+
+# Verify installation
+npm list express  # Should show Express version
+```
+
+---
+
+### Step 6️⃣ Configure Environment (Optional)
+
+Create a `.env` file for custom configuration:
+```bash
+# .env
+PORT=3100
+API_HOST=http://localhost:9001
+TTS_MODEL_PATH=./model/tts
+MAX_TEXT_LENGTH=1000
+```
+
+---
+
+### Step 7️⃣ Start the Application
+
+You need **two terminal windows** running simultaneously.
+
+**Terminal 1 - Backend Server (FastAPI)**
+```bash
+# Make sure conda environment is activated
+conda activate cypher-aibook
+
+# Start FastAPI server
+python run.py
+```
+
+Expected output:
+```
+INFO:     Uvicorn running on http://127.0.0.1:9001 (Press CTRL+C to quit)
+```
+
+**Terminal 2 - Frontend Server (Express)**
+```bash
+# Install Node dependencies if not done yet
+npm install
+
+# Start Express server
 npm start
 ```
-Frontend runs on `http://localhost:3100`
 
-Open your browser to **[http://localhost:3100](http://localhost:3100)**
+Expected output:
+```
+Server running on http://localhost:3100
+```
+
+---
+
+### Step 8️⃣ Verify Everything Works
+
+Open your browser and navigate to: **http://localhost:3100**
+
+You should see the cypher-aibook interface. Verify:
+- ✅ Text input field loads
+- ✅ Model dropdown shows available models
+- ✅ Backend health check: `curl http://localhost:9001/health`
+- ✅ Test synthesis:
+  ```bash
+  curl "http://localhost:9001/synthesize?text=Hello+world&model_id=tts_models/en/ljspeech/tacotron2-DDC"
+  ```
+
+---
+
+### 🛑 Stopping the Servers
+
+To stop the application:
+1. Press `Ctrl+C` in both terminal windows
+2. Deactivate Conda environment: `conda deactivate`
+
+---
+
+### 📋 Complete Setup Checklist
+
+- [ ] Python 3.10+ installed
+- [ ] Conda environment created and activated
+- [ ] Python dependencies installed (`pip install -r requirements.txt`)
+- [ ] TTS models downloaded (`python setup.py` or manual download)
+- [ ] Node dependencies installed (`npm install`)
+- [ ] Backend running on `http://localhost:9001`
+- [ ] Frontend running on `http://localhost:3100`
+- [ ] Health check passes: `curl http://localhost:9001/health`
+- [ ] Can access interface at `http://localhost:3100`
 
 ---
 
