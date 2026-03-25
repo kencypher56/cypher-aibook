@@ -58,9 +58,10 @@
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased">
 
-<div class="max-w-6xl mx-auto px-4 py-10 sm:px-6 lg:px-8">
+<div class="max-w-6xl mx-auto px-4 py-10 sm:px-6 lg:px-8 text-center">
   <!-- Hero Section -->
   <div class="text-center mb-12">
+  <p class="text-sm text-indigo-500 uppercase tracking-widest mb-1"><i class="fas fa-info-circle"></i> Centrally aligned, icon-first UI</p>
     <div class="inline-flex items-center justify-center p-3 bg-indigo-100 rounded-full mb-6">
       <i class="fas fa-book-open text-4xl text-indigo-600"></i>
     </div>
