@@ -393,15 +393,15 @@ kill -9 $(lsof -t -i:3100)  # Port 3100
 
 ---
 
-## 🤝 Contributing
+## 🤝 Feedback
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Code contributions are not accepted: forks and pull requests cannot be taken
+in, because the licence keeps authorship in one pair of hands. What genuinely
+helps:
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. 🐛 Open an issue when something breaks, with the steps that broke it
+2. 💡 Open an issue for a feature you want — these get built
+3. 📣 Point people at the only true source for this software: <https://cypherstore.netlify.app>
 
 ---
 
